@@ -57,3 +57,12 @@ To fetch outputs programmatically:
 ```bash
 pulumi stack output vnet_name
 ```
+
+## 🔒 Security & Architecture Note (Production Readiness)
+By design, the compute resource (`vm-app-prod`) deployed within the `snet-app` tier **does not have a Public IP address assigned**. This ensures the application layer remains completely invisible and isolated from the public internet (Zero Inbound Access).
+
+### 🚀 Future Roadmap & Next Phases
+To transition this foundational network architecture into a fully accessible production environment, the following components are designed to be integrated next:
+1. **Inbound Traffic (Ingress):** Provisioning an **Azure Application Gateway** or a **Public Load Balancer** within the `snet-web` tier to securely route public HTTP/HTTPS traffic into the private App Tier.
+2. **Secure Remote Management:** Injecting an **Azure Bastion** host or a secure VPN Gateway into the VNet for just-in-time (JIT) administrative SSH access without exposing open ports to the world.
+3. **Enterprise Outbound Access:** Upgrading the default Azure outbound mechanism to an **Azure NAT Gateway** attached to the subnets for dedicated, static source-NAT (SNAT) IP management.
